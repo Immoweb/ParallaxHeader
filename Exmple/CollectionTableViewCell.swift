@@ -7,19 +7,14 @@
 //
 
 import UIKit
-import Reusable
 
-
-class CollectionTableViewCell: UITableViewCell, Reusable {
-    
+class CollectionTableViewCell: UITableViewCell {
     @IBOutlet weak var collectionView: UICollectionView!
 
-    
     // life cycle
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
 }

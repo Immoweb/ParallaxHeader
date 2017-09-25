@@ -7,12 +7,10 @@
 //
 
 import UIKit
-import Reusable
 
-typealias ItemDetailedHeaderClickHandler = (_ item: IndexPath, _ image: UIImage, _ cell: ItemDetailedCell)->Void
+typealias ItemDetailedHeaderClickHandler = (_ item: IndexPath, _ image: UIImage, _ cell: ItemDetailedCell) -> Void
 
 class ImageHeaderDataSourse: ImagesDataSourse {
-    
     private (set) var selectedImageIndex = 0
     private (set) var scrollToItem: IndexPath?
     
@@ -28,15 +26,14 @@ class ImageHeaderDataSourse: ImagesDataSourse {
     }
     
     
-    //MARK: setup
+    // MARK: setup
     
     func setup(
         collectionView: UICollectionView,
         images: [UIImage]?,
         handler: ((_ item: IndexPath)->Void)? = nil,
         clickHandler: ItemDetailedHeaderClickHandler? = nil
-        ) {
-        
+	) {
         self.clickHandler = clickHandler
         super.setup(collectionView: collectionView, images: images, handler: handler)
     }
@@ -54,8 +51,8 @@ class ImageHeaderDataSourse: ImagesDataSourse {
     override func checkOnRightToLeftMode() {
         if UIApplication.isRTL {
             let indexPath = IndexPath(row: 0, section: 0)
-            //            collectionView?.scrollToItem(at: indexPath, at: .right, animated: false)
-            //            selectCell(forIndexPath: indexPath)
+//            collectionView?.scrollToItem(at: indexPath, at: .right, animated: false)
+//            selectCell(forIndexPath: indexPath)
             collectionView?.scrollToItem(
                 at: indexPath,
                 at: .right,
@@ -64,10 +61,13 @@ class ImageHeaderDataSourse: ImagesDataSourse {
         }
     }
     
-    
     // MARK: CollectionView protocols
     
-    override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    override func collectionView(
+		_ collectionView: UICollectionView,
+		layout collectionViewLayout: UICollectionViewLayout,
+		sizeForItemAt indexPath: IndexPath
+	) -> CGSize {
         let height = collectionView.frame.height
         let width = collectionView.frame.width
         return CGSize(width: width, height: height)
@@ -77,8 +77,11 @@ class ImageHeaderDataSourse: ImagesDataSourse {
         return 0
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(for: indexPath) as ItemDetailedCell
+    override func collectionView(
+		_ collectionView: UICollectionView,
+		cellForItemAt indexPath: IndexPath
+	) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ItemDetailedCell
         
         cell.isSelected = true
         cell.image = images?[indexPath.row]
@@ -94,7 +97,6 @@ class ImageHeaderDataSourse: ImagesDataSourse {
         
         clickHandler?(indexPath, cell.image ?? UIImage(), cell)
     }
-    
     
     //MARK: scroll view delegate
     
@@ -131,4 +133,3 @@ class ImageHeaderDataSourse: ImagesDataSourse {
         }
     }
 }
-

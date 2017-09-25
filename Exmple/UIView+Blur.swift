@@ -9,19 +9,16 @@
 import UIKit
 
 extension UIView {
-    
     private struct AssociatedKeys {
         static var descriptiveName = "AssociatedKeys.DescriptiveName.blurView"
     }
     
     private (set) var blurView: BlurView {
         get {
-            if let blurView = objc_getAssociatedObject(
-                self,
-                &AssociatedKeys.descriptiveName
-                ) as? BlurView {
+            if let blurView = objc_getAssociatedObject(self, &AssociatedKeys.descriptiveName) as? BlurView {
                 return blurView
             }
+
             self.blurView = BlurView(to: self)
             return self.blurView
         }
@@ -36,7 +33,6 @@ extension UIView {
     }
     
     class BlurView {
-        
         private var superview: UIView
         private var blur: UIVisualEffectView?
         private var editing: Bool = false
@@ -49,7 +45,7 @@ extension UIView {
          * Blur style. After it is changed all subviews on
          * blurContentView & vibrancyContentView will be deleted.
          */
-        var style: UIBlurEffectStyle = .light {
+        var style: UIBlurEffect.Style = .light {
             didSet {
                 guard oldValue != style,
                     !editing else { return }
@@ -76,7 +72,7 @@ extension UIView {
             self.superview = view
         }
         
-        func setup(style: UIBlurEffectStyle, alpha: CGFloat) -> Self {
+        func setup(style: UIBlurEffect.Style, alpha: CGFloat) -> Self {
             self.editing = true
             
             self.style = style
@@ -104,8 +100,7 @@ extension UIView {
             )
         }
         
-        private func applyBlurEffect(style: UIBlurEffectStyle,
-                                     blurAlpha: CGFloat) {
+        private func applyBlurEffect(style: UIBlurEffect.Style, blurAlpha: CGFloat) {
             superview.backgroundColor = UIColor.clear
             
             let blurEffect = UIBlurEffect(style: style)
@@ -130,18 +125,18 @@ extension UIView {
     
     private func addAlignedConstrains() {
         translatesAutoresizingMaskIntoConstraints = false
-        addAlignConstraintToSuperview(attribute: NSLayoutAttribute.top)
-        addAlignConstraintToSuperview(attribute: NSLayoutAttribute.leading)
-        addAlignConstraintToSuperview(attribute: NSLayoutAttribute.trailing)
-        addAlignConstraintToSuperview(attribute: NSLayoutAttribute.bottom)
+        addAlignConstraintToSuperview(attribute: NSLayoutConstraint.Attribute.top)
+        addAlignConstraintToSuperview(attribute: NSLayoutConstraint.Attribute.leading)
+        addAlignConstraintToSuperview(attribute: NSLayoutConstraint.Attribute.trailing)
+        addAlignConstraintToSuperview(attribute: NSLayoutConstraint.Attribute.bottom)
     }
     
-    private func addAlignConstraintToSuperview(attribute: NSLayoutAttribute) {
+    private func addAlignConstraintToSuperview(attribute: NSLayoutConstraint.Attribute) {
         superview?.addConstraint(
             NSLayoutConstraint(
                 item: self,
                 attribute: attribute,
-                relatedBy: NSLayoutRelation.equal,
+                relatedBy: NSLayoutConstraint.Relation.equal,
                 toItem: superview,
                 attribute: attribute,
                 multiplier: 1,

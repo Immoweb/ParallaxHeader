@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import Reusable
 
 class ImagesDataSourse: NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     private (set) weak var collectionView: UICollectionView? {
         didSet {
             collectionView?.dataSource = self
@@ -21,16 +19,20 @@ class ImagesDataSourse: NSObject, UICollectionViewDelegate, UICollectionViewData
     private (set) var handler: ((_ item: IndexPath)->Void)?
     private (set) var images: [UIImage]?
     private (set) var selectedPicture: Int = 0
-    
+
+	private let cellReuseId = "cell"
+
     func setup(
         collectionView: UICollectionView,
         images: [UIImage]?,
         handler: ((_ item: IndexPath)->Void)? = nil
-        ) {
-        
+	) {
         self.handler = handler
         self.images = images
         self.collectionView = collectionView
+
+		let nib = UINib(nibName: "\(ItemDetailedCell.self)", bundle: nil)
+		self.collectionView?.register(nib, forCellWithReuseIdentifier: cellReuseId)
     }
     
     func selectCell(forIndexPath indexPath: IndexPath) {
@@ -64,42 +66,54 @@ class ImagesDataSourse: NSObject, UICollectionViewDelegate, UICollectionViewData
             collectionView?.scrollToItem(at: indexPath, at: .right, animated: false)
         }
     }
-    
-    
+
     // MARK: CollectionView protocols
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images?.count ?? 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(
+		_ collectionView: UICollectionView,
+		layout collectionViewLayout: UICollectionViewLayout,
+		sizeForItemAt indexPath: IndexPath
+	) -> CGSize {
         return CGSize(width: 100, height: collectionView.frame.size.height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(
+		_ collectionView: UICollectionView,
+		layout collectionViewLayout: UICollectionViewLayout,
+		minimumInteritemSpacingForSectionAt section: Int
+	) -> CGFloat {
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(
+		_ collectionView: UICollectionView,
+		layout collectionViewLayout: UICollectionViewLayout,
+		minimumLineSpacingForSectionAt section: Int
+	) -> CGFloat {
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.zero
+    func collectionView(
+		_ collectionView: UICollectionView,
+		layout collectionViewLayout: UICollectionViewLayout,
+		insetForSectionAt section: Int
+	) -> UIEdgeInsets {
+        return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueCell(for: indexPath) as ItemDetailedCell
-        
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseId, for: indexPath) as! ItemDetailedCell
         cell.isSelected = indexPath.item == selectedPicture
-        
         cell.image = images?[indexPath.row]
-        
-        return cell
+
+		return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectCell(forIndexPath: indexPath)
         handler?(indexPath)
     }

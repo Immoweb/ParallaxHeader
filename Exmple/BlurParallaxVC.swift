@@ -12,7 +12,6 @@ import SnapKit
 
 
 class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     @IBOutlet weak var tableView: UITableView!
     weak var headerImageView: UIView?
     
@@ -21,9 +20,8 @@ class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         setupParallaxHeader()
     }
-    
-    
-    //MARK: private
+
+    // MARK: private
     
     private func setupParallaxHeader() {
         let imageView = UIImageView()
@@ -31,7 +29,7 @@ class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         imageView.contentMode = .scaleAspectFill
         
         //setup blur vibrant view
-        imageView.blurView.setup(style: UIBlurEffectStyle.dark, alpha: 1).enable()
+        imageView.blurView.setup(style: .dark, alpha: 1).enable()
         
         headerImageView = imageView
         
@@ -56,11 +54,11 @@ class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             make.edges.equalToSuperview()
         }
     }
+
+    // MARK: actions
     
-    
-    //MARK: actions
-    
-    @objc private func imageDidTap(gesture: UITapGestureRecognizer) {
+    @objc
+	private func imageDidTap(gesture: UITapGestureRecognizer) {
         UIView.animate(withDuration: 0.3) {
             if self.tableView.parallaxHeader.height == 400 {
                 self.tableView.parallaxHeader.height = 200
@@ -69,9 +67,8 @@ class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
     }
-    
-    
-    //MARK: table view data source/delegate
+
+    // MARK: table view data source/delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
@@ -79,9 +76,7 @@ class BlurParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        
         cell.textLabel?.text = "some row text"
-        
         return cell
     }
 }

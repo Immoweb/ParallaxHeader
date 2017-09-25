@@ -8,9 +8,7 @@
 
 import UIKit
 
-
 class CollectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     @IBOutlet weak var tableView: UITableView!
     private (set) var collectionParallaxView: UICollectionView!
     private (set) var headerBuilder = ImageHeaderDataSourse()
@@ -25,8 +23,9 @@ class CollectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         UIImage(named: "4")!,
         UIImage(named: "5")!
     ]
-    
-    
+
+	private let cellReuseId = "cell"
+
     //MARK: vc life cycle
     
     override func viewDidLoad() {
@@ -34,7 +33,6 @@ class CollectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         
         setupParallaxHeader()
     }
-    
     
     private func setupParallaxHeader() {
         //height for header without navigation bar & tab bar
@@ -62,6 +60,9 @@ class CollectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource
         tableView.parallaxHeader.parallaxHeaderDidScrollHandler = { parallaxHeader in
             print(parallaxHeader.progress)
         }
+
+		let nib = UINib(nibName: "\(CollectionTableViewCell.self)", bundle: nil)
+		tableView.register(nib, forCellReuseIdentifier: cellReuseId)
     }
     
     
@@ -80,7 +81,7 @@ class CollectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeue(forIndexPath: indexPath) as CollectionTableViewCell
+			let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseId, for: indexPath) as! CollectionTableViewCell
             
             sliderBuilder.setup(
                 collectionView: cell.collectionView,

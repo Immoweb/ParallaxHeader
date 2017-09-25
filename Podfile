@@ -3,8 +3,5 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'Exmple' do
-
-    pod 'RSReusable'
     pod 'SnapKit'
-
 end

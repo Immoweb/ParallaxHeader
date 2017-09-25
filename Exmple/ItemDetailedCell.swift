@@ -7,13 +7,10 @@
 //
 
 import UIKit
-import Reusable
 
-class ItemDetailedCell: UICollectionViewCell, Reusable {
-    
+class ItemDetailedCell: UICollectionViewCell {
     @IBOutlet weak fileprivate var imageView: UIImageView!
     @IBOutlet weak fileprivate var whiteEffectView: UIView!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

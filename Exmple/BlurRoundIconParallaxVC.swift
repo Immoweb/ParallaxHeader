@@ -8,20 +8,16 @@
 
 import UIKit
 
-
 class BlurRoundIconParallaxVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     @IBOutlet weak var tableView: UITableView!
     weak var parallaxHeaderView: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupParallaxHeader()
     }
-    
-    
-    //MARK: private
+
+    // MARK: private
     
     private func setupParallaxHeader() {
         let image = UIImage(named: "profile")
@@ -32,7 +28,7 @@ class BlurRoundIconParallaxVC: UIViewController, UITableViewDelegate, UITableVie
         parallaxHeaderView = imageView
         
         //setup bur view
-        imageView.blurView.setup(style: UIBlurEffectStyle.dark, alpha: 1).enable()
+        imageView.blurView.setup(style: .dark, alpha: 1).enable()
         
         tableView.parallaxHeader.view = imageView
         tableView.parallaxHeader.height = 400
@@ -61,9 +57,8 @@ class BlurRoundIconParallaxVC: UIViewController, UITableViewDelegate, UITableVie
             make.width.height.equalTo(100)
         }
     }
-    
-    
-    //MARK: table view data source/delegate
+
+    // MARK: table view data source/delegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 20
@@ -71,11 +66,7 @@ class BlurRoundIconParallaxVC: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        
         cell.textLabel?.text = "some row text"
-        
         return cell
     }
 }
-
-
